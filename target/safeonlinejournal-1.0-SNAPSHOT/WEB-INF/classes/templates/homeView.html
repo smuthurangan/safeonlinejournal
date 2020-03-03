@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Safe Online Journal</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/png" th:href="@{/images/icons/favicon.ico}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/util.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/Table.css}"/>
+    <script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <script lang="javascript">
+        function showEnter() {
+            var div = document.getElementById("addButton");
+            div.style.display = "none";
+
+            var div1 = document.getElementById("enterJournal");
+            div1.style.display = "block";
+        }
+
+        function showHistory() {
+            var form = document.getElementById("history");
+            form.submit();
+
+            var div = document.getElementById("addHistory");
+            div.style.display = "none";
+
+            var div1 = document.getElementById("historyJournal");
+            div1.style.display = "block";
+        }
+
+    </script>
+</head>
+<body>
+<div class="limiter">
+    <div class="container-login100">
+        <div id="addButton" style="display: none" class="wrap-login100">
+            <a id="clickEnter" href="javascript:showEnter();">
+                    <span class="mainhome-form-title">
+                    <i class="fa fa-plus">
+						Add
+                    </i>
+                    </span>
+            </a>
+        </div>
+        <div id="enterJournal" style="display: block" class="wrap-login100">
+            <form class="login100-form validate-form p-l-55 p-r-55 p-t-15" action="#" th:action="@{/addJournal}" th:object="${journal}" method="post">
+                <span class="mainhome-form-text">
+                <textarea class="textareabig" name="comment" th:inline="text">[[${journal.comment}]]</textarea>
+                </span>
+                <div class="container-home-form-btn">
+                    <button class="login100-form-btn">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+            <div id="addHistory" style="display: block" class="wrap-login100">
+                <form id="history" class="login100-form validate-form" action="#" th:action="@{/getJournal}" method="get">
+                <a id="clickHistory" href="javascript:showHistory();">
+					<span class="mainhome-form-title">
+                        <i class="fa fa-list">
+						History
+                        </i>
+					</span>
+                </a>
+                </form>
+            </div>
+        <div id="historyJournal" style="display: none" class="wrap-login100">
+
+<!--            <form class="login100-form validate-form p-l-55 p-r-55 p-t-15" action="#" th:action="@{/addJournal}" th:object="${journal}" method="post">-->
+<!--                <span class="mainhome-form-text">-->
+<!--                <textarea class="textareabig" name="comment">Enter journal here...</textarea>-->
+<!--                </span>-->
+<!--                <div class="container-home-form-btn">-->
+<!--                    <button class="login100-form-btn">-->
+<!--                        Submit-->
+<!--                    </button>-->
+<!--                </div>-->
+                <table class="flatTable">
+                    <thead>
+                    <tr class="titleTr">
+                        <td class="titleTd">History of Journals</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr class="headingTr">
+                        <td>Create Time</td>
+                        <td>Journal</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="journal : ${journals}">
+                        <td><span th:text="${journal.createTime}"> Create Time </span></td>
+                        <td><span th:text="${journal.comment}"> Journal </span></td>
+                        <td><span> <a th:href="@{/viewJournal} + '/' + ${journal.id}">View </a></span></td>
+                        <td><span> <a th:href="@{/deleteJournal} + '/' + ${journal.id}">Delete </a></span></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
